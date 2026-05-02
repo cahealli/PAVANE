@@ -1,0 +1,28 @@
+{
+  "name": "api",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "tsx watch --tsconfig tsconfig.json src/index.ts",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "db:migrate": "tsx src/db/migrate.ts"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.11.1",
+    "@pavane/shared": "workspace:*",
+    "better-sqlite3": "^9.6.0",
+    "drizzle-orm": "^0.31.2",
+    "hono": "^4.4.6",
+    "js-yaml": "^4.1.0",
+    "nanoid": "^5.0.7",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.10",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.14.2",
+    "drizzle-kit": "^0.22.7",
+    "tsx": "^4.15.4",
+    "typescript": "^5.4.5"
+  }
+}
