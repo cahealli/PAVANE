@@ -7,7 +7,20 @@ import { KanbanBoard } from "@/components/kanban/KanbanBoard";
 import { AddCardModal } from "@/components/modals/AddCardModal";
 import { RunPanel } from "@/components/run/RunPanel";
 import { Button } from "@/components/ui/Button";
-import type { Card } from "@pavane/shared";
+import type { Card, RunStatus } from "@pavane/shared";
+
+const RUN_STATUS_TITLE: Record<RunStatus, string> = {
+  queued:               "⏳ Na fila",
+  preparing_workspace:  "🔧 Preparando",
+  orchestrating:        "🧠 Planejando",
+  spawning_workers:     "⚡ Iniciando workers",
+  executing:            "⚡ Executando",
+  collecting_evidence:  "📊 Coletando evidências",
+  reviewing:            "🔍 Revisando",
+  needs_fix:            "⚠️ Precisa corrigir",
+  ready:                "✅ Pronto para revisão",
+  failed:               "❌ Falhou",
+};
 
 export default function BoardPage() {
   const { projectId } = useParams<{ projectId: string }>();
@@ -17,6 +30,7 @@ export default function BoardPage() {
   const [project, setProject] = useState<any>(null);
   const [showAddCard, setShowAddCard] = useState(false);
   const [activeRunId, setActiveRunId] = useState<string | null>(null);
+  const [activeRunStatus, setActiveRunStatus] = useState<RunStatus | null>(null);
   const [runningCard, setRunningCard] = useState<string | null>(null);
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
 
@@ -25,17 +39,43 @@ export default function BoardPage() {
     loadCards(projectId);
   }, [projectId]);
 
+  // Título dinâmico
+  useEffect(() => {
+    const base = project?.name ?? "Board";
+    if (activeRunStatus && activeRunId) {
+      const statusLabel = RUN_STATUS_TITLE[activeRunStatus] ?? activeRunStatus;
+      document.title = `${statusLabel} · ${base} — Pavane`;
+    } else {
+      document.title = `${base} — Pavane`;
+    }
+  }, [project, activeRunStatus, activeRunId]);
+
+  // Limpa título ao sair
+  useEffect(() => {
+    return () => { document.title = "Pavane"; };
+  }, []);
+
   async function handleRunCard(card: Card) {
     setRunningCard(card.id);
     try {
       const run = await api.runs.create(card.id);
       updateCardStatus(card.id, "planning");
       setActiveRunId(run.id);
+      setActiveRunStatus("queued");
     } catch (err: any) {
       alert(`Erro ao iniciar execução: ${err.message}`);
     } finally {
       setRunningCard(null);
     }
+  }
+
+  function handleRunStatusChange(status: RunStatus) {
+    setActiveRunStatus(status);
+  }
+
+  function handleRunClose() {
+    setActiveRunId(null);
+    setActiveRunStatus(null);
   }
 
   function handleCardClick(card: Card) {
@@ -98,7 +138,8 @@ export default function BoardPage() {
           <div className="w-[480px] border-l border-pavane-border flex flex-col bg-pavane-surface shrink-0">
             <RunPanel
               runId={activeRunId}
-              onClose={() => setActiveRunId(null)}
+              onStatusChange={handleRunStatusChange}
+              onClose={handleRunClose}
             />
           </div>
         )}

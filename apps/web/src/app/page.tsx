@@ -6,6 +6,7 @@ import { AddProjectModal } from "@/components/modals/AddProjectModal";
 import { Button } from "@/components/ui/Button";
 import { api } from "@/lib/api";
 import { APP_VERSION } from "@/lib/version";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import type { Project } from "@pavane/shared";
 
 type ProjectWithMeta = Project & { isGitRepo: boolean; hasPavaneConfig: boolean };
@@ -15,6 +16,8 @@ export default function ProjectsPage() {
   const { projects, loadProjects } = useStore();
   const [showAdd, setShowAdd] = useState(false);
   const [deleting, setDeleting] = useState<string | null>(null);
+
+  usePageTitle("Projetos");
 
   useEffect(() => {
     loadProjects();

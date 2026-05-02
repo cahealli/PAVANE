@@ -1,16 +1,16 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { api } from "@/lib/api";
-import type { Run, WorkerRun, Evidence, SSEEvent, LogEntry } from "@pavane/shared";
+import type { Run, WorkerRun, Evidence, SSEEvent, LogEntry, RunStatus } from "@pavane/shared";
 import { WORKER_STATUS_COLORS, CARD_STATUS_LABELS, cn, formatRelativeTime } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { useStore } from "@/store";
 
-type Props = { runId: string; onClose: () => void };
+type Props = { runId: string; onClose: () => void; onStatusChange?: (status: RunStatus) => void };
 
 type RunDetail = Run & { workers: WorkerRun[]; evidence: Evidence[] };
 
-export function RunPanel({ runId, onClose }: Props) {
+export function RunPanel({ runId, onClose, onStatusChange }: Props) {
   const { updateCardStatus } = useStore();
   const [run, setRun] = useState<RunDetail | null>(null);
   const [logs, setLogs] = useState<LogEntry[]>([]);
@@ -31,6 +31,7 @@ export function RunPanel({ runId, onClose }: Props) {
         setLogs((prev) => [...prev, event.data]);
       } else if (event.type === "run_status") {
         setRun((prev) => prev ? { ...prev, status: event.data.status } : prev);
+        onStatusChange?.(event.data.status);
       } else if (event.type === "worker_status") {
         setRun((prev) => {
           if (!prev) return prev;

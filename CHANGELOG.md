@@ -1,5 +1,16 @@
 # Changelog
 
+## [020526.18.00] — 02/05/2026
+
+### Adicionado
+- Favicon SVG exclusivo do Pavane — "P" geométrico em índigo com dot de agente
+- Título da aba muda em tempo real conforme estado do app:
+  - Projetos → `Projetos — Pavane`
+  - Board → `[Nome do Projeto] — Pavane`
+  - Run ativa → `⏳/🧠/⚡/🔍/✅/❌ [status] · [Projeto] — Pavane`
+- Hook `usePageTitle` para gerenciar títulos nas páginas estáticas
+- `lang="pt-BR"` no html raiz
+
 ## [020526.17.15] — 02/05/2026
 
 ### Mudado
