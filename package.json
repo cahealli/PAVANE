@@ -1,0 +1,17 @@
+{
+  "name": "pavane",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev": "concurrently --names \"API,WEB\" --prefix-colors \"cyan,magenta\" \"pnpm --filter api dev\" \"pnpm --filter web dev\"",
+    "build": "pnpm --filter api build && pnpm --filter web build",
+    "typecheck": "pnpm --filter api typecheck && pnpm --filter web typecheck",
+    "api": "pnpm --filter api dev",
+    "web": "pnpm --filter web dev"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "typescript": "^5.4.5"
+  }
+}
