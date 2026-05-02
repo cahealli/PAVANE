@@ -1,5 +1,12 @@
 # Changelog
 
+## [020526.17.15] — 02/05/2026
+
+### Mudado
+- UI sempre na porta 7123 (era 3000)
+- API sempre na porta 7124 (era 3001)
+- Pavane.bat, start.ps1 e next.config.js atualizados
+
 ## [020526.17.00] — 02/05/2026
 
 ### Adicionado

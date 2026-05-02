@@ -9,8 +9,8 @@ if (Test-Path ".env") {
     }
 }
 
-Write-Host "Starting Pavane API on http://localhost:3001" -ForegroundColor Cyan
-Write-Host "Starting Pavane UI on http://localhost:3000" -ForegroundColor Cyan
+Write-Host "Starting Pavane API on http://localhost:7124" -ForegroundColor Cyan
+Write-Host "Starting Pavane UI on http://localhost:7123" -ForegroundColor Cyan
 Write-Host ""
 
 # Start API in background
@@ -25,4 +25,4 @@ Start-Sleep -Seconds 3
 
 # Start web in foreground
 cd "C:\Users\carlo\Documents\Antigravity\PAVANE\apps\web"
-npx next dev -p 3000
+npx next dev -p 7123
