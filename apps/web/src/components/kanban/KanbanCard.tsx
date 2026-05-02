@@ -71,13 +71,13 @@ export function KanbanCard({ card, onClick, onRun }: Props) {
           onClick={(e) => { e.stopPropagation(); onRun(); }}
           className="mt-2 w-full text-[10px] text-pavane-accent hover:text-white hover:bg-pavane-accent/20 rounded px-2 py-1 transition-colors border border-transparent hover:border-pavane-accent/40 text-center"
         >
-          Run with Pavane
+          Executar com Pavane
         </button>
       )}
       {isRunning && (
         <div className="mt-2 flex items-center gap-1.5">
           <span className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse" />
-          <span className="text-[9px] text-yellow-400">Running...</span>
+          <span className="text-[9px] text-yellow-400">Executando...</span>
         </div>
       )}
     </div>

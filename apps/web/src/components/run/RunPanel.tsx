@@ -73,7 +73,7 @@ export function RunPanel({ runId, onClose }: Props) {
   if (!run) {
     return (
       <div className="flex items-center justify-center h-64 text-pavane-text-muted text-sm">
-        Loading run...
+        Carregando execução...
       </div>
     );
   }
@@ -91,13 +91,13 @@ export function RunPanel({ runId, onClose }: Props) {
             <RunStatusBadge status={run.status} />
           </div>
           <p className="text-[11px] text-pavane-text-muted">
-            Strategy: {run.strategy} · Workers: {run.maxWorkers} · Provider: {run.orchestratorProvider}
+            Estratégia: {run.strategy} · Workers: {run.maxWorkers} · Provedor: {run.orchestratorProvider}
           </p>
         </div>
         <div className="flex items-center gap-2">
           {isRunning && (
             <Button variant="danger" size="sm" onClick={handleAbort}>
-              Abort
+              Cancelar
             </Button>
           )}
           <button
@@ -117,9 +117,11 @@ export function RunPanel({ runId, onClose }: Props) {
         </div>
       )}
 
-      {/* Tabs */}
+      {/* Abas */}
       <div className="flex gap-0 border-b border-pavane-border">
-        {(["logs", "workers", "evidence"] as const).map((tab) => (
+        {(["logs", "workers", "evidence"] as const).map((tab) => {
+          const tabLabels = { logs: "Logs", workers: "Workers", evidence: "Evidências" };
+          return (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -130,7 +132,7 @@ export function RunPanel({ runId, onClose }: Props) {
                 : "text-pavane-text-muted border-transparent hover:text-pavane-text"
             )}
           >
-            {tab}
+            {tabLabels[tab]}
             {tab === "logs" && logs.length > 0 && (
               <span className="ml-1 text-[9px] text-pavane-text-muted">({logs.length})</span>
             )}
@@ -138,7 +140,8 @@ export function RunPanel({ runId, onClose }: Props) {
               <span className="ml-1 text-[9px] text-pavane-text-muted">({run.evidence.length})</span>
             )}
           </button>
-        ))}
+          );
+        })}
       </div>
 
       {/* Content */}
@@ -150,7 +153,7 @@ export function RunPanel({ runId, onClose }: Props) {
           >
             {logs.length === 0 && (
               <div className="text-pavane-text-muted text-center py-8">
-                {isRunning ? "Waiting for logs..." : "No logs"}
+                {isRunning ? "Aguardando logs..." : "Sem logs"}
               </div>
             )}
             {logs.map((entry, i) => (
@@ -163,7 +166,7 @@ export function RunPanel({ runId, onClose }: Props) {
           <div className="p-4 space-y-3">
             {run.workers.length === 0 && (
               <div className="text-pavane-text-muted text-sm text-center py-8">
-                No workers yet
+                Nenhum worker ainda
               </div>
             )}
             {run.workers.map((w) => (
@@ -176,7 +179,7 @@ export function RunPanel({ runId, onClose }: Props) {
           <div className="p-4 space-y-3 h-full overflow-y-auto">
             {run.evidence.length === 0 && (
               <div className="text-pavane-text-muted text-sm text-center py-8">
-                No evidence collected yet
+                Nenhuma evidência coletada ainda
               </div>
             )}
             {run.evidence.map((ev) => (
@@ -188,6 +191,19 @@ export function RunPanel({ runId, onClose }: Props) {
     </div>
   );
 }
+
+const RUN_STATUS_LABELS: Record<string, string> = {
+  queued: "na fila",
+  preparing_workspace: "preparando workspace",
+  orchestrating: "orquestrando",
+  spawning_workers: "iniciando workers",
+  executing: "executando",
+  collecting_evidence: "coletando evidências",
+  reviewing: "revisando",
+  needs_fix: "precisa corrigir",
+  ready: "pronto",
+  failed: "falhou",
+};
 
 function RunStatusBadge({ status }: { status: string }) {
   const colors: Record<string, string> = {
@@ -205,7 +221,7 @@ function RunStatusBadge({ status }: { status: string }) {
 
   return (
     <span className={cn("text-[10px] font-medium uppercase px-2 py-0.5 rounded", colors[status] ?? "bg-pavane-muted text-pavane-text-muted")}>
-      {status.replace(/_/g, " ")}
+      {RUN_STATUS_LABELS[status] ?? status.replace(/_/g, " ")}
     </span>
   );
 }
@@ -241,8 +257,9 @@ function WorkerCard({ worker, evidence }: { worker: WorkerRun; evidence: Evidenc
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <span className="text-xs font-bold text-pavane-accent">Worker {worker.label.toUpperCase()}</span>
+
           <span className={cn("text-[10px] px-2 py-0.5 rounded font-medium", WORKER_STATUS_COLORS[worker.status])}>
-            {worker.status}
+            {{ queued: "na fila", running: "executando", completed: "concluído", failed: "falhou", cancelled: "cancelado" }[worker.status] ?? worker.status}
           </span>
         </div>
         <span className="text-[10px] text-pavane-text-muted font-mono">{worker.model}</span>
@@ -259,7 +276,7 @@ function WorkerCard({ worker, evidence }: { worker: WorkerRun; evidence: Evidenc
             onClick={() => setShowDiff(!showDiff)}
             className="text-[10px] text-pavane-accent hover:underline"
           >
-            {showDiff ? "Hide diff" : "Show diff"}
+            {showDiff ? "Esconder diff" : "Ver diff"}
           </button>
           {showDiff && (
             <pre className="mt-2 text-[10px] font-mono text-pavane-text bg-pavane-bg border border-pavane-border rounded p-2 overflow-x-auto max-h-48 overflow-y-auto whitespace-pre">
@@ -287,6 +304,18 @@ function EvidenceCard({ evidence }: { evidence: Evidence }) {
     command_output: "text-pavane-text-muted",
   };
 
+  const kindLabels: Record<string, string> = {
+    diff: "diff",
+    git_status: "git status",
+    typecheck_result: "typecheck",
+    build_result: "build",
+    test_result: "testes",
+    review: "revisão",
+    plan: "plano",
+    summary: "resumo",
+    command_output: "saída de comando",
+  };
+
   return (
     <div className="border border-pavane-border rounded-lg overflow-hidden">
       <button
@@ -295,7 +324,7 @@ function EvidenceCard({ evidence }: { evidence: Evidence }) {
       >
         <div className="flex items-center gap-2">
           <span className={cn("text-[10px] font-medium uppercase", kindColors[evidence.kind] ?? "text-pavane-text-muted")}>
-            {evidence.kind.replace(/_/g, " ")}
+            {kindLabels[evidence.kind] ?? evidence.kind.replace(/_/g, " ")}
           </span>
           <span className="text-xs text-pavane-text">{evidence.title}</span>
         </div>

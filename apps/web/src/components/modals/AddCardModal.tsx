@@ -32,30 +32,30 @@ export function AddCardModal({ open, onClose, projectId }: Props) {
   }
 
   return (
-    <Modal open={open} onClose={onClose} title="New Card" className="max-w-2xl">
+    <Modal open={open} onClose={onClose} title="Novo Card" className="max-w-2xl">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
-          <label className="text-xs text-pavane-text-muted mb-1 block">Title</label>
+          <label className="text-xs text-pavane-text-muted mb-1 block">Título</label>
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Add user authentication"
+            placeholder="Adicionar autenticação de usuário"
             required
             className="w-full bg-pavane-bg border border-pavane-border rounded px-3 py-2 text-sm text-pavane-text focus:outline-none focus:border-pavane-accent"
           />
         </div>
         <div>
-          <label className="text-xs text-pavane-text-muted mb-1 block">Objective</label>
+          <label className="text-xs text-pavane-text-muted mb-1 block">Objetivo</label>
           <textarea
             value={objective}
             onChange={(e) => setObjective(e.target.value)}
-            placeholder="Describe exactly what needs to be done. Be specific about the files, behavior, and acceptance criteria..."
+            placeholder="Descreva exatamente o que precisa ser feito. Seja específico sobre os arquivos, comportamento e critérios de aceitação..."
             required
             rows={6}
             className="w-full bg-pavane-bg border border-pavane-border rounded px-3 py-2 text-sm text-pavane-text focus:outline-none focus:border-pavane-accent resize-none"
           />
           <p className="text-[10px] text-pavane-text-muted mt-1">
-            This objective will be sent to the orchestrator. Be precise.
+            Este objetivo será enviado ao orquestrador. Seja preciso.
           </p>
         </div>
         {error && (
@@ -65,10 +65,10 @@ export function AddCardModal({ open, onClose, projectId }: Props) {
         )}
         <div className="flex justify-end gap-2">
           <Button variant="ghost" size="sm" type="button" onClick={onClose}>
-            Cancel
+            Cancelar
           </Button>
           <Button size="sm" loading={loading} type="submit">
-            Create Card
+            Criar Card
           </Button>
         </div>
       </form>

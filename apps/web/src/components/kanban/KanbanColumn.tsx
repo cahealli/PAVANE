@@ -49,7 +49,7 @@ export function KanbanColumn({ status, cards, onCardClick, onRunCard }: Props) {
         </SortableContext>
         {cards.length === 0 && (
           <div className="flex items-center justify-center h-12 text-[11px] text-pavane-text-muted select-none">
-            empty
+            vazio
           </div>
         )}
       </div>

@@ -8,16 +8,16 @@ export function cn(...inputs: ClassValue[]) {
 
 export const CARD_STATUS_LABELS: Record<CardStatus, string> = {
   backlog: "Backlog",
-  ready: "Ready",
-  planning: "Planning",
-  delegated: "Delegated",
-  implementing: "Implementing",
-  verifying: "Verifying",
-  reviewing: "Reviewing",
-  needs_fix: "Needs Fix",
-  ready_for_human_review: "Ready for Review",
-  failed: "Failed",
-  done: "Done",
+  ready: "Pronto",
+  planning: "Planejando",
+  delegated: "Delegado",
+  implementing: "Implementando",
+  verifying: "Verificando",
+  reviewing: "Revisando",
+  needs_fix: "Precisa Corrigir",
+  ready_for_human_review: "Aguarda Revisão",
+  failed: "Falhou",
+  done: "Concluído",
 };
 
 export const CARD_STATUS_COLORS: Record<CardStatus, string> = {
@@ -57,10 +57,10 @@ export const KANBAN_COLUMNS: CardStatus[] = [
 export function formatRelativeTime(iso: string): string {
   const diff = Date.now() - new Date(iso).getTime();
   const seconds = Math.floor(diff / 1000);
-  if (seconds < 60) return `${seconds}s ago`;
+  if (seconds < 60) return `${seconds}s atrás`;
   const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m ago`;
+  if (minutes < 60) return `${minutes}m atrás`;
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  return `${Math.floor(hours / 24)}d ago`;
+  if (hours < 24) return `${hours}h atrás`;
+  return `${Math.floor(hours / 24)}d atrás`;
 }

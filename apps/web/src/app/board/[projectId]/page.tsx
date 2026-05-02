@@ -32,7 +32,7 @@ export default function BoardPage() {
       updateCardStatus(card.id, "planning");
       setActiveRunId(run.id);
     } catch (err: any) {
-      alert(`Failed to start run: ${err.message}`);
+      alert(`Erro ao iniciar execução: ${err.message}`);
     } finally {
       setRunningCard(null);
     }
@@ -50,7 +50,7 @@ export default function BoardPage() {
           onClick={() => router.push("/")}
           className="text-pavane-text-muted hover:text-pavane-text text-sm transition-colors"
         >
-          ← Projects
+          ← Projetos
         </button>
         <div className="w-px h-4 bg-pavane-border" />
         <div className="flex items-center gap-2">
@@ -78,7 +78,7 @@ export default function BoardPage() {
             {cards.length} card{cards.length !== 1 ? "s" : ""}
           </span>
           <Button size="sm" onClick={() => setShowAddCard(true)}>
-            + New Card
+            + Novo Card
           </Button>
         </div>
       </header>
@@ -122,7 +122,7 @@ export default function BoardPage() {
               </button>
             </div>
             <div className="mb-4">
-              <p className="text-xs text-pavane-text-muted mb-1 uppercase tracking-wider">Objective</p>
+              <p className="text-xs text-pavane-text-muted mb-1 uppercase tracking-wider">Objetivo</p>
               <p className="text-sm text-pavane-text whitespace-pre-wrap bg-pavane-bg border border-pavane-border rounded-lg p-4">
                 {selectedCard.objective}
               </p>
@@ -130,11 +130,11 @@ export default function BoardPage() {
             <div className="flex items-center gap-2 text-xs text-pavane-text-muted mb-4">
               <span>Status: {selectedCard.status}</span>
               <span>·</span>
-              <span>Created: {new Date(selectedCard.createdAt).toLocaleDateString()}</span>
+              <span>Criado em: {new Date(selectedCard.createdAt).toLocaleDateString("pt-BR")}</span>
             </div>
             <div className="flex justify-end gap-2">
               <Button variant="ghost" size="sm" onClick={() => setSelectedCard(null)}>
-                Close
+                Fechar
               </Button>
               {(selectedCard.status === "backlog" || selectedCard.status === "ready" || selectedCard.status === "needs_fix") && (
                 <Button
@@ -145,7 +145,7 @@ export default function BoardPage() {
                     setSelectedCard(null);
                   }}
                 >
-                  Run with Pavane
+                  Executar com Pavane
                 </Button>
               )}
             </div>

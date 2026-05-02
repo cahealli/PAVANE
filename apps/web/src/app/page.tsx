@@ -5,6 +5,7 @@ import { useStore } from "@/store";
 import { AddProjectModal } from "@/components/modals/AddProjectModal";
 import { Button } from "@/components/ui/Button";
 import { api } from "@/lib/api";
+import { APP_VERSION } from "@/lib/version";
 import type { Project } from "@pavane/shared";
 
 type ProjectWithMeta = Project & { isGitRepo: boolean; hasPavaneConfig: boolean };
@@ -20,7 +21,7 @@ export default function ProjectsPage() {
   }, []);
 
   async function handleDelete(id: string) {
-    if (!confirm("Delete this project? Cards and runs will also be deleted.")) return;
+    if (!confirm("Excluir este projeto? Cards e execuções também serão removidos.")) return;
     setDeleting(id);
     await api.projects.delete(id).catch(console.error);
     await loadProjects();
@@ -37,33 +38,33 @@ export default function ProjectsPage() {
           </div>
           <span className="text-sm font-semibold text-pavane-text tracking-wide">Pavane</span>
           <span className="text-[10px] text-pavane-text-muted bg-pavane-muted px-2 py-0.5 rounded">
-            mvp 0.1
+            {APP_VERSION}
           </span>
         </div>
         <div className="text-[10px] text-pavane-text-muted">
-          Codex thinks. DeepSeek builds. Pavane verifies. Human approves.
+          Codex pensa. DeepSeek altera. Pavane verifica. Humano aprova.
         </div>
       </header>
 
       <main className="max-w-5xl mx-auto px-6 py-10">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-semibold text-pavane-text mb-1">Projects</h1>
+            <h1 className="text-2xl font-semibold text-pavane-text mb-1">Projetos</h1>
             <p className="text-sm text-pavane-text-muted">
-              Each project is a local git repository managed by Pavane.
+              Cada projeto é um repositório git local gerenciado pelo Pavane.
             </p>
           </div>
-          <Button onClick={() => setShowAdd(true)}>+ Add Project</Button>
+          <Button onClick={() => setShowAdd(true)}>+ Novo Projeto</Button>
         </div>
 
         {projects.length === 0 && (
           <div className="border border-dashed border-pavane-border rounded-xl p-16 text-center">
             <div className="text-4xl mb-4">🎼</div>
-            <h2 className="text-lg font-medium text-pavane-text mb-2">No projects yet</h2>
+            <h2 className="text-lg font-medium text-pavane-text mb-2">Nenhum projeto ainda</h2>
             <p className="text-sm text-pavane-text-muted mb-6">
-              Add a local git repository to start orchestrating with Pavane.
+              Adicione um repositório git local para começar a orquestrar com o Pavane.
             </p>
-            <Button onClick={() => setShowAdd(true)}>Add your first project</Button>
+            <Button onClick={() => setShowAdd(true)}>Adicionar primeiro projeto</Button>
           </div>
         )}
 
@@ -85,7 +86,7 @@ export default function ProjectsPage() {
                     </span>
                   ) : (
                     <span className="text-[9px] text-red-400 bg-red-900/30 border border-red-900 px-1.5 py-0.5 rounded">
-                      no git
+                      sem git
                     </span>
                   )}
                   {p.hasPavaneConfig && (
@@ -114,7 +115,7 @@ export default function ProjectsPage() {
                   disabled={deleting === p.id}
                   className="text-[10px] text-pavane-text-muted hover:text-red-400 transition-colors"
                 >
-                  {deleting === p.id ? "..." : "delete"}
+                  {deleting === p.id ? "..." : "excluir"}
                 </button>
               </div>
             </div>
